@@ -2,13 +2,13 @@ package com.hotelreservationproject;
 
 public class Result {
     String hotelName;
-    int totalCost;
+    Integer totalCost;
 
     public String getHotelName() {
         return hotelName;
     }
 
-    public int getTotalCost() {
+    public Integer getTotalCost() {
         return totalCost;
     }
 
@@ -16,7 +16,7 @@ public class Result {
         this.hotelName = hotelName;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(Integer totalCost) {
         this.totalCost = totalCost;
     }
 }

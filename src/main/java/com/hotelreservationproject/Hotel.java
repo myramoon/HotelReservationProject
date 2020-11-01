@@ -1,13 +1,18 @@
 package com.hotelreservationproject;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 public class Hotel {
     private String hotelName;
     private String typeOfCustomer;
-    private int weekdayRate;
-    private int weekendRate;
-    public int costWeekday;
+    private Integer weekdayRate;
+    private Integer weekendRate;
+    public Integer totalCost;
 
-    public Hotel(String hotelName, String typeOfCustomer, int weekdayRate , int weekendRate) {
+    public Hotel(String hotelName, String typeOfCustomer, Integer weekdayRate , Integer weekendRate) {
         this.hotelName = hotelName;
         this.typeOfCustomer = typeOfCustomer;
         this.weekdayRate = weekdayRate;
@@ -22,19 +27,23 @@ public class Hotel {
         return typeOfCustomer;
     }
 
-    public int getWeekdayRate() {
+    public Integer getWeekdayRate() {
         return weekdayRate;
     }
 
-    public int getWeekendRate() {
+    public Integer getWeekendRate() {
         return weekendRate;
     }
 
-    public int getCostWeekday() {
-        return  costWeekday;
+    public Integer getTotalCost(){
+        return totalCost;
+    }
+    public void setTotalCost(Integer totalCost){
+        this.totalCost = totalCost;
     }
 
-    public void setCostWeekDay(int costWeekday) {
-        this.costWeekday = costWeekday;
+    public Integer getTotalRate(LocalDate dateStart , LocalDate dateEnd , long difference) { //calculates total cost for hotel
+        Optional<Integer> totalcost = Stream.iterate(dateStart , date -> date.plusDays(difference)).limit(dateEnd.getDayOfMonth() - dateStart.getDayOfMonth() + 1 ).map(date -> { if(date.getDayOfWeek().equals(DayOfWeek.SATURDAY) || date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) return this.getWeekendRate();return this.getWeekdayRate();}).reduce((total , next) -> total+next);
+        return totalcost.get();
     }
 }

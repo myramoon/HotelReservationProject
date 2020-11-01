@@ -1,50 +1,47 @@
 package com.hotelreservationproject;
-import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 
-public class HotelReservation {
+public class HotelReservation{
 
-    Hotel addHotel(String name , String type , int weekdayRate , int weekendRate) {
+    Hotel addHotel(String name , String type , Integer weekdayRate , Integer weekendRate) { //add hotel
         return new Hotel(name , type , weekdayRate , weekendRate);
     }
 
-    public Result findCheapestHotel(ArrayList<Hotel> hotelArray , String dateS , String dateE) {  //returns calculated cheapest hotel
-        int daysInBetween = getDaysInBetween(dateS , dateE);
-        return getCheapestHotel(daysInBetween , hotelArray);
-    }
+    public Result findCheapestHotel(ArrayList<Hotel> hotelArray , String dateS , String dateE) {  //gets total cost for each hotel and returns cheapest hotel
 
-    private static int getDaysInBetween(String dateS , String dateE){ //finds days in between
+        Integer cost;
+        LocalDate dateStart = null , dateEnd = null;
 
-        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
-        Date dateStart = new Date();
         try {
-            dateStart = formatter.parse(dateS);
+            dateStart = LocalDate.parse(dateS);
         } catch (Exception e) {
             System.out.println("Please enter proper starting date");
         }
-        Date dateEnd = new Date();
         try {
-            dateEnd = formatter.parse(dateE);
+            dateEnd = LocalDate.parse(dateE);
         } catch (Exception e) {
             System.out.println("Please enter proper ending date");
         }
+        long difference = Duration.between(dateStart.atStartOfDay() , dateEnd.atStartOfDay()).toDays();
 
-        long difference = dateEnd.getTime() - dateStart.getTime();
-        return (int) Math.ceil(difference / (1000 * 60 * 60 * 24));
+        for(Hotel hotel : hotelArray) {
+            cost = hotel.getTotalRate(dateStart, dateEnd, difference);
+            hotel.setTotalCost(cost);
+        }
+        return this.getCheapestHotel(hotelArray);
     }
 
-    private static Result getCheapestHotel(int daysInBetween , ArrayList<Hotel> hotelArray) throws NoSuchElementException { //calculates cheapest hotel and returns its details
-        int currentHotelCost;
-            for (Hotel currentHotel : hotelArray) {     // set weekday cost for each hotel
-                currentHotelCost = daysInBetween * currentHotel.getWeekdayRate();
-                currentHotel.setCostWeekDay(currentHotelCost);
-            }
-        Optional<Hotel> cheapestHotel = hotelArray.stream().min(Comparator.comparing(Hotel::getCostWeekday));
+    public Result getCheapestHotel(ArrayList<Hotel> hotelArray){ //compares total costs of hotels
+        Optional<Hotel> cheapestHotel = hotelArray.stream().min(Comparator.comparingInt(hotel -> hotel.getTotalCost()));
         Result result = new Result();
         result.setHotelName(cheapestHotel.get().getHotelName());
-        result.setTotalCost(cheapestHotel.get().getCostWeekday());
+        result.setTotalCost(cheapestHotel.get().getTotalCost());
+        System.out.println(result.getHotelName() + result.getTotalCost());
         return result;
     }
+
 }
 
 
