@@ -48,7 +48,7 @@ public class HotelReservationTest {
         Assert.assertTrue(newHotel.getRating().equals(3));
     }
 
-    //Tests for verifying cheapest and best rated hotel
+    //Test for verifying cheapest and best rated hotel
     @Test
     public void givenDateRange_WhenAddedForHotel_ShouldReturnCheapestHotelRateOnBasisOfCostAndRating() {
         HotelReservation hotelReservation = new HotelReservation();
@@ -56,7 +56,30 @@ public class HotelReservationTest {
         hotelArray.add(hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 , 3));
         hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Normal" , 160 , 50 , 4));
         hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Normal" , 220 , 150  , 5));
-        Result cheapestHotel = hotelReservation.findCheapestHotel(hotelArray , "2020-09-11" , "2020-09-12");
-        Assert.assertEquals("Bridgewood" , cheapestHotel.getHotelName());
+        Result cheapestBestRatedHotel = hotelReservation.findCheapestBestRatedHotel(hotelArray , "2020-09-11" , "2020-09-12");
+        Assert.assertEquals("Bridgewood" , cheapestBestRatedHotel.getHotelName());
+    }
+
+    //Tests for verifying best rated hotel
+    @Test
+    public void givenDateRange_WhenAddedForHotel_ShouldReturnHotelNameOnBasisOfBestRating() {
+        HotelReservation hotelReservation = new HotelReservation();
+        ArrayList<Hotel> hotelArray = new ArrayList<>();
+        hotelArray.add(hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 , 3));
+        hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Normal" , 160 , 50 , 4));
+        hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Normal" , 220 , 150  , 5));
+        Result bestRatedHotel = hotelReservation.findBestRatedHotel(hotelArray , "2020-09-11" , "2020-09-12");
+        Assert.assertEquals("Ridgewood" , bestRatedHotel.getHotelName());
+    }
+
+    @Test
+    public void givenDateRange_WhenAddedForHotel_ShouldReturnHotelCostOnBasisOfBestRating() {
+        HotelReservation hotelReservation = new HotelReservation();
+        ArrayList<Hotel> hotelArray = new ArrayList<>();
+        hotelArray.add(hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 , 3));
+        hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Normal" , 160 , 50 , 4));
+        hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Normal" , 220 , 150  , 5));
+        Result bestRatedHotel = hotelReservation.findBestRatedHotel(hotelArray , "2020-09-11" , "2020-09-12");
+        Assert.assertTrue(bestRatedHotel.getTotalCost().equals(370));
     }
 }
