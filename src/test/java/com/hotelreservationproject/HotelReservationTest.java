@@ -100,4 +100,27 @@ public class HotelReservationTest {
         Hotel hotel3 = hotelReservation.addHotel("Ridgewood" , "Reward" , 100 , 40 , 5);
         Assert.assertTrue(hotel2.getTypeOfCustomer().equals("Reward"));
     }
+
+    //Test for verifying cheapest and best rated hotel for reward customers
+    @Test
+    public void givenDateRange_WhenPassedForRewardCustomers_ShouldReturnCheapestHotelNameOnBasisOfCostAndRating() {
+        HotelReservation hotelReservation = new HotelReservation();
+        ArrayList<Hotel> hotelArray = new ArrayList<>();
+        hotelArray.add(hotelReservation.addHotel("Lakewood" , "Reward" , 80 , 80 , 3));
+        hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Reward" , 110 , 50 , 4));
+        hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Reward" , 100 , 40  , 5));
+        Result cheapestBestRatedHotel = hotelReservation.findCheapestBestRatedHotel(hotelArray , "2020-09-11" , "2020-09-12");
+        Assert.assertEquals("Ridgewood" , cheapestBestRatedHotel.getHotelName());
+    }
+
+    @Test
+    public void givenDateRange_WhenPassedForRewardCustomers_ShouldReturnCheapestHotelRateOnBasisOfCostAndRating() {
+        HotelReservation hotelReservation = new HotelReservation();
+        ArrayList<Hotel> hotelArray = new ArrayList<>();
+        hotelArray.add(hotelReservation.addHotel("Lakewood" , "Reward" , 80 , 80 , 3));
+        hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Reward" , 110 , 50 , 4));
+        hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Reward" , 100 , 40  , 5));
+        Result cheapestBestRatedHotel = hotelReservation.findCheapestBestRatedHotel(hotelArray , "2020-09-11" , "2020-09-12");
+        Assert.assertTrue(cheapestBestRatedHotel.getTotalCost().equals(140));
+    }
 }
