@@ -3,33 +3,49 @@ package com.hotelreservationproject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class HotelReservationTest {
     @Test
     public void givenHotelDetails_WhenAddedForHotel_ShouldReturnEnteredName() {
         HotelReservation hotelReservation = new HotelReservation();
-        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 );
-        Assert.assertEquals(newHotel.hotelName , "Lakewood");
+        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110);
+        Assert.assertEquals(newHotel.getHotelName() , "Lakewood");
     }
 
     @Test
     public void givenHotelDetails_WhenAddedForHotel_ShouldReturnEnteredCustomerType() {
         HotelReservation hotelReservation = new HotelReservation();
-        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 );
-        Assert.assertEquals(newHotel.typeOfCustomer , "Normal");
+        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110  );
+        Assert.assertEquals(newHotel.getTypeOfCustomer() , "Normal");
     }
 
     @Test
     public void givenHotelDetails_WhenAddedForHotel_ShouldReturnEnteredWeekdayRate() {
         HotelReservation hotelReservation = new HotelReservation();
-        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 );
-        Assert.assertEquals(newHotel.weekdayRate , 110);
+        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110);
+        Assert.assertEquals(newHotel.getWeekdayRate() , 110);
     }
 
     @Test
-    public void givenHotelDetails_WhenAddedForHotel_ShouldReturnEnteredWeekDayRate() {
+    public void givenDateRange_WhenAddedForHotel_ShouldReturnCheapestHotelName() {
         HotelReservation hotelReservation = new HotelReservation();
-        Hotel newHotel = hotelReservation.addHotel("Lakewood" , "Normal" , 110 , 90 );
-        Assert.assertEquals(newHotel.weekendRate , 90);
+        ArrayList<Hotel> hotelArray = new ArrayList<>();
+        hotelArray.add(hotelReservation.addHotel("Lakewood" , "Normal" , 110  ));
+        hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Normal" , 160 ));
+        hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Normal" , 220  ));
+        Result cheapestHotel = hotelReservation.findCheapestHotel(hotelArray,"10092020" , "12092020");
+        Assert.assertEquals("Lakewood" , cheapestHotel.getHotelName() );
     }
 
+    @Test
+    public void givenDateRange_WhenAddedForHotel_ShouldReturnCheapestHotelRate() {
+        HotelReservation hotelReservation = new HotelReservation();
+        ArrayList<Hotel> hotelArray = new ArrayList<>();
+        hotelArray.add(hotelReservation.addHotel("Lakewood" , "Normal" , 110  ));
+        hotelArray.add(hotelReservation.addHotel("Bridgewood" , "Normal" , 160  ));
+        hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Normal" , 220  ));
+        Result cheapestHotel = hotelReservation.findCheapestHotel(hotelArray,"10092020" , "12092020");
+        Assert.assertEquals(220 , cheapestHotel.getTotalCost());
+    }
 }
