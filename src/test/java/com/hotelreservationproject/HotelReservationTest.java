@@ -1,5 +1,4 @@
 package com.hotelreservationproject;
-
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.ArrayList;
@@ -81,5 +80,24 @@ public class HotelReservationTest {
         hotelArray.add(hotelReservation.addHotel("Ridgewood" , "Normal" , 220 , 150  , 5));
         Result bestRatedHotel = hotelReservation.findBestRatedHotel(hotelArray , "2020-09-11" , "2020-09-12");
         Assert.assertTrue(bestRatedHotel.getTotalCost().equals(370));
+    }
+
+    //Tests for verifying entered special weekday and weekend rates under loyalty program
+    @Test
+    public void givenLoyaltyProgramDetails_WhenAddedForHotel_ShouldReturnEnteredSpecialWeekdayRate() {
+        HotelReservation hotelReservation = new HotelReservation();
+        Hotel hotel1 = hotelReservation.addHotel("Lakewood" , "Reward" , 80 , 80 , 3);
+        Hotel hotel2 = hotelReservation.addHotel("Bridgewood" , "Reward" , 110 , 50 , 4);
+        Hotel hotel3 = hotelReservation.addHotel("Ridgewood" , "Reward" , 100 , 40 , 5);
+        Assert.assertTrue(hotel3.getWeekdayRate().equals(100));
+    }
+
+    @Test
+    public void givenLoyaltyProgramDetails_WhenAddedForHotel_ShouldMatchEnteredTypeOfCustomer() {
+        HotelReservation hotelReservation = new HotelReservation();
+        Hotel hotel1 = hotelReservation.addHotel("Lakewood" , "Reward" , 80 , 80 , 3);
+        Hotel hotel2 = hotelReservation.addHotel("Bridgewood" , "Reward" , 110 , 50 ,4);
+        Hotel hotel3 = hotelReservation.addHotel("Ridgewood" , "Reward" , 100 , 40 , 5);
+        Assert.assertTrue(hotel2.getTypeOfCustomer().equals("Reward"));
     }
 }
