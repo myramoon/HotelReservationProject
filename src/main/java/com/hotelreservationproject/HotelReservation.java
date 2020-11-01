@@ -5,11 +5,12 @@ import java.util.*;
 
 public class HotelReservation {
 
-    Hotel addHotel(String name , String type , Integer weekdayRate , Integer weekendRate , Integer rating) { //add hotel
+    public Hotel addHotel(String name , String type , Integer weekdayRate , Integer weekendRate , Integer rating) { //add hotel
+
         return new Hotel(name , type , weekdayRate , weekendRate , rating);
     }
 
-    public Result findCheapestHotel(ArrayList<Hotel> hotelArray , String dateS , String dateE) {  //gets total cost for each hotel and returns cheapest and best rated hotel
+    public void setCost(ArrayList<Hotel> hotelArray , String dateS , String dateE) {  //gets total cost for each hotel and returns cheapest and best rated hotel
 
         Integer cost;
         LocalDate dateStart = null , dateEnd = null;
@@ -30,13 +31,12 @@ public class HotelReservation {
             cost = hotel.getTotalRate(dateStart, dateEnd, difference);
             hotel.setTotalCost(cost);
         }
-        Result result = this.getCheapestHotel(hotelArray);
-        result = this.cheapestBestRatedHotel(hotelArray , result);
-        return result;
     }
 
-    public Result getCheapestHotel(ArrayList<Hotel> hotelArray){ //compares total costs of hotels
 
+    public Result getCheapestHotel(ArrayList<Hotel> hotelArray , String dateS , String dateE){ //compares total costs of hotels
+
+        this.setCost(hotelArray , dateS , dateE);
         Optional<Hotel> cheapestHotel = hotelArray.stream().min(Comparator.comparingInt(hotel -> hotel.getTotalCost()));
         Result result = new Result();
         result.setHotelName(cheapestHotel.get().getHotelName());
@@ -44,7 +44,10 @@ public class HotelReservation {
         return result;
     }
 
-    public Result cheapestBestRatedHotel(ArrayList<Hotel> hotelArray , Result result) {  //finds cheapest and best rated hotel
+    public Result findCheapestBestRatedHotel(ArrayList<Hotel> hotelArray , String dateS ,String dateE) {  //finds cheapest and best rated hotel
+
+        Result result;
+        result = this.getCheapestHotel(hotelArray , dateS , dateE);
         Optional<Hotel> maxCostHotel = hotelArray.stream().max(Comparator.comparingInt(hotel -> hotel.getTotalCost()));
         Optional<Hotel> minRatingHotel = hotelArray.stream().min(Comparator.comparingInt(hotel -> hotel.getRating()));
         for (Hotel hotel : hotelArray) {
@@ -56,9 +59,15 @@ public class HotelReservation {
         }
         return result;
     }
+
+    public Result findBestRatedHotel(ArrayList<Hotel> hotelArray , String dateS , String dateE) { //returns best rated hotel for a date range
+
+        Result result = new Result();
+        this.setCost(hotelArray , dateS , dateE);
+        Optional<Hotel> maxRatingHotel = hotelArray.stream().max(Comparator.comparingInt(hotel -> hotel.getRating()));
+        result.setHotelName(maxRatingHotel.get().getHotelName());
+        result.setTotalCost(maxRatingHotel.get().getTotalCost());
+        result.setRating(maxRatingHotel.get().getRating());
+        return result;
+    }
 }
-
-
-
-
-
