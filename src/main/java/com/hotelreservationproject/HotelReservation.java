@@ -4,8 +4,8 @@ import java.util.*;
 
 public class HotelReservation {
 
-    Hotel addHotel(String name , String type , int weekday) {
-        return new Hotel(name , type , weekday);
+    Hotel addHotel(String name , String type , int weekdayRate , int weekendRate) {
+        return new Hotel(name , type , weekdayRate , weekendRate);
     }
 
     public Result findCheapestHotel(ArrayList<Hotel> hotelArray , String dateS , String dateE) {  //returns calculated cheapest hotel

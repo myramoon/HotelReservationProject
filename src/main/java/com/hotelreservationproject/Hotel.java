@@ -4,12 +4,14 @@ public class Hotel {
     private String hotelName;
     private String typeOfCustomer;
     private int weekdayRate;
+    private int weekendRate;
     public int costWeekday;
 
-    public Hotel(String hotelName, String typeOfCustomer, int weekdayRate) {
+    public Hotel(String hotelName, String typeOfCustomer, int weekdayRate , int weekendRate) {
         this.hotelName = hotelName;
         this.typeOfCustomer = typeOfCustomer;
         this.weekdayRate = weekdayRate;
+        this.weekendRate = weekendRate;
     }
 
     public String getHotelName() {
@@ -22,6 +24,10 @@ public class Hotel {
 
     public int getWeekdayRate() {
         return weekdayRate;
+    }
+
+    public int getWeekendRate() {
+        return weekendRate;
     }
 
     public int getCostWeekday() {
